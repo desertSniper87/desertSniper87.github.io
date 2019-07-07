@@ -9,19 +9,19 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="programming, Computing, " />
+<meta name="keywords" content=", computing, " />
 
-<meta property="og:title" content="Ubuntu Linux Server on Virtualbox "/>
-<meta property="og:url" content="./vbox-srv.html" />
-<meta property="og:description" content="hi there." />
+<meta property="og:title" content="Installing debian mips on qemu "/>
+<meta property="og:url" content="./debian-mips-qemu.html" />
+<meta property="og:description" content="Hi, recently I had to install a little endian machine to test out some old C code for academic ressons. I had choices of using Sun solaris for SPARC workstations or using a mips machine. I went on to install debian wheezy on qemu mips. First download the appropriate vmlinux …" />
 <meta property="og:site_name" content="[torsho@localhost]" />
 <meta property="og:article:author" content="Samidhya Sarker" />
-<meta property="og:article:published_time" content="2018-05-10T00:00:00+06:00" />
-<meta property="og:article:modified_time" content="2019-04-20T00:00:00+06:00" />
-<meta name="twitter:title" content="Ubuntu Linux Server on Virtualbox ">
-<meta name="twitter:description" content="hi there.">
+<meta property="og:article:published_time" content="2019-05-09T00:00:00+06:00" />
+<meta property="og:article:modified_time" content="2019-05-18T00:00:00+06:00" />
+<meta name="twitter:title" content="Installing debian mips on qemu ">
+<meta name="twitter:description" content="Hi, recently I had to install a little endian machine to test out some old C code for academic ressons. I had choices of using Sun solaris for SPARC workstations or using a mips machine. I went on to install debian wheezy on qemu mips. First download the appropriate vmlinux …">
 
-        <title>Ubuntu Linux Server on Virtualbox  · [torsho@localhost]
+        <title>Installing debian mips on qemu  · [torsho@localhost]
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -66,7 +66,7 @@
 <article itemscope>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="./vbox-srv.html"> Ubuntu Linux Server on Virtualbox  </a></h1>
+    <h1><a href="./debian-mips-qemu.html"> Installing debian mips on qemu  </a></h1>
     </header>
 </div>
 
@@ -74,39 +74,28 @@
         <div class="span8 offset2 article-content">
 
             
-            <!--Status: draft-->
+            <!-- Status: draft -->
 
-<h2>Update 2019-04-20</h2>
-<p>Just use <a href="https://www.vagrantup.com/intro/getting-started/">vagrant</a>.</p>
-<p>=== === === === === === </p>
-<ol>
-<li>
-<p>I downloaded the ISO, installed it into virtualbox.</p>
-</li>
-<li>
-<p>In ubuntu server, I installed necessary packages like <code>apache2, vim</code> etc using apt.</p>
-</li>
-<li>
-<p>Every virtual machine is by default, connected using <a href="https://en.wikipedia.org/wiki/Network_address_translation">NAT</a> virtual netwrking. Here the HOST OS manages the address resolution of the Guest VM. We can change the network to bridged adapter, or, set up port forwarding. </p>
-</li>
-</ol>
-<p><img alt="" src="./images/nat_port_forwarding.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"></p>
-<p>To go with the latter approach, In the settings window, go to network tabs. Set up 2 ports: <code>22</code> for <code>ssh</code> and <code>80</code> for server.</p>
-<ol>
-<li>
-<p>You can now ssh into the vm using <code>ssh -p 3022 yourname@127.0.0.1</code>. You can also use scp to copy your files by <code>scp -r -P 3022 yousite yourname@127.0.0.1:/path/</code></p>
-</li>
-<li>
-<p>Access your server in your browser in host OS <code>127.0.0.1:9980</code>
-<br/>
-<br/>
-<img alt="Vbox" src="./images/vbox-serv-final.jpg"></p>
-</li>
-</ol>
-<h5>See also</h5>
-<ol>
-<li><a href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">Containers</a>, <a href="https://en.wikipedia.org/wiki/Virtual_private_server">VPS</a>.</li>
-</ol>
+<p>Hi, recently I had to install a little endian machine to test out some old C code for academic ressons. I had choices of using Sun solaris for SPARC workstations or using a mips machine. I went on to install debian wheezy on qemu mips.</p>
+<p>First download the appropriate vmlinux kernel and harddisk qcow2 image from Aurélien Jarno's ftp site.
+<a href="https://people.debian.org/~aurel32/qemu/mips/">https://people.debian.org/TLIDEaurel32/qemu/mips/</a></p>
+<div class="highlight"><pre><span></span>./qemu/build/mips-softmmu/qemu-system-mips <span class="se">\</span>
+-m <span class="m">256</span> <span class="se">\</span>
+-M malta <span class="se">\</span>
+-kernel vmlinux-3.2.0-4-4kc-malta <span class="se">\</span>
+-hda debian_wheezy_mips_standard.qcow2 <span class="se">\</span>
+-append <span class="s2">&quot;root=/dev/sda1 console=tty0&quot;</span> <span class="se">\</span>
+-net user,hostfwd<span class="o">=</span>tcp::10022-:22 <span class="se">\</span>
+-net nic
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>sysctl -w net.ipv4.ping_group_range<span class="o">=</span><span class="s1">&#39;0 2147483647&#39;</span>
+</pre></div>
+
+
+<p>Now you can ssh into qemu. Password is root 
+ssh root@localhost -p 10022  </p>
             <div>
 </div>
 
@@ -121,19 +110,13 @@
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time itemprop="dateCreated" datetime="2018-05-10T00:00:00+06:00">May 10, 2018</time>
+            <time itemprop="dateCreated" datetime="2019-05-09T00:00:00+06:00">May 9, 2019</time>
 
 <h4>Last Updated</h4>
-<time datetime="2019-04-20T00:00:00+06:00">Apr 20, 2019</time>
+<time datetime="2019-05-18T00:00:00+06:00">May 18, 2019</time>
 
             <h4>Category</h4>
-            <a class="category-link" href="./categories.html#computing-ref">Computing</a>
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article">
-                <li><a href="./tags#programming-ref">programming
-                    <span>2</span>
-</a></li>
-            </ul>
+            <a class="category-link" href="./categories.html#computing-ref">computing</a>
 <h4>Contact</h4>
     <a href="http://www.facebook.com/desertsniper87" title="My Facebook Profile" class="sidebar-social-links" target="_blank">
     <i class="fa fa-facebook sidebar-social-links"></i></a>
